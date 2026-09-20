@@ -25,8 +25,9 @@ function App() {
   const milliseconds = Math.floor((elapsed % 1000) / 10)
   const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(milliseconds).padStart(2, '0')}`
   const bestRecordedTime = previousRecordedTime > 0 ? previousRecordedTime : 60000
-  const activeProgressTime = isRunning ? elapsed : bestRecordedTime || elapsed
-  const progress = bestRecordedTime > 0 ? (activeProgressTime % bestRecordedTime) / bestRecordedTime * 100 : 0
+  const activeProgressTime = isRunning ? elapsed : bestRecordedTime
+  const referenceTime = isRunning ? 60000 : bestRecordedTime
+  const progress = Math.min((activeProgressTime / referenceTime) * 100, 100)
   const distanceCm = Number(largePieces || 0) * 30 + Number(shortPieces || 0) * 17
   const elapsedSeconds = elapsed / 1000
   const speedCmPerSecond = elapsedSeconds > 0 ? distanceCm / elapsedSeconds : 0
